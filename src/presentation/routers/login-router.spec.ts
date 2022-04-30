@@ -21,7 +21,8 @@ class HttpResponse {
 
 class LoginRouter {
     route(request: HttpRequest): HttpResponse {
-        if (!request.body.email) {
+        const { email, password } = request.body
+        if (!email || !password) {
             return new HttpResponse(400)
         }
 
@@ -34,9 +35,7 @@ describe('Login router', () => {
         const loginRouter = new LoginRouter()
         const httpRequest = new HttpRequest()
         httpRequest.setBody({
-            body: {
-                password: '123456',
-            },
+            password: '123456',
         })
 
         const httpResponse = loginRouter.route(httpRequest)
@@ -49,9 +48,7 @@ describe('Login router', () => {
         const loginRouter = new LoginRouter()
         const httpRequest = new HttpRequest()
         httpRequest.setBody({
-            body: {
-                email: 'test@gmail.com',
-            },
+            email: 'test@gmail.com',
         })
 
         const httpResponse = loginRouter.route(httpRequest)
