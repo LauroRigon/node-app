@@ -8,12 +8,19 @@ export type LoginBody = {
 }
 
 export class LoginRouter {
+    authUseCase: any
+
+    constructor(authUseCase: any) {
+        this.authUseCase = authUseCase
+    }
+
     route(request: HttpRequest<LoginBody>): HttpResponse<ResponseBody> {
         const { email, password } = request.body
         if (!email || !password) {
             return HttpResponse.badRequest('Email and password are required')
         }
 
+        this.authUseCase.auth(email, password)
         return HttpResponse.success()
     }
 }
