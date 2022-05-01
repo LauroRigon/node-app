@@ -1,10 +1,10 @@
 export type ResponseBody = {
     message: string
-    data: any[]
+    data?: any[]
 }
 
 export enum StatusCode {
-    OK = 100,
+    OK = 200,
     CREATED = 201,
     BAD_REQUEST = 400,
     UNAUTHORIZED = 401,
@@ -24,8 +24,11 @@ export default class HttpResponse<BodyType> {
         return new HttpResponse<ResponseBody>(StatusCode.BAD_REQUEST)
             .setBody({
                 message: message ?? 'Bad request',
-                data: []
             })
+    }
+
+    static unautorized() {
+        return new HttpResponse<ResponseBody>(StatusCode.UNAUTHORIZED)
     }
 
     static success() {

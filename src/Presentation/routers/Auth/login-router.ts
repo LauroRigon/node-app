@@ -1,5 +1,6 @@
 import HttpRequest from "../../HttpRequest/HttpRequest"
 import HttpResponse, { ResponseBody } from "../../HttpResponse/HttpResponse"
+import AuthUseCaseInterface from "../../../UseCases/Auth/AuthUseCaseInterface";
 
 
 export type LoginBody = {
@@ -10,7 +11,7 @@ export type LoginBody = {
 export class LoginRouter {
     authUseCase: any
 
-    constructor(authUseCase: any) {
+    constructor(authUseCase: AuthUseCaseInterface) {
         this.authUseCase = authUseCase
     }
 
@@ -20,7 +21,12 @@ export class LoginRouter {
             return HttpResponse.badRequest('Email and password are required')
         }
 
-        this.authUseCase.auth(email, password)
+        try {
+            this.authUseCase.auth(email, password)
+        } catch (error: unknown) {
+            return HttpResponse.unautorized()
+        }
+
         return HttpResponse.success()
     }
 }
